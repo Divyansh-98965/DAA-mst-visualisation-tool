@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Minimum Spanning Tree (MST) Interactive Visualizer &amp; Practice Arena</title>
+  <meta name="description"
+    content="Interactive educational suite for Minimum Spanning Trees (Prim's &amp; Kruskal's Algorithms): step-by-step canvas visualization, real-time pseudocode tracing, custom graph builder with positive weight validation, and interactive edge-tapping practice arena." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- Top Navigation Bar -->
+  <nav id="top-nav">
+    <div class="nav-left">
+      <div class="logo-group">
+        <span class="logo-badge">MST</span>
+        <span class="logo-title">MSTLab</span>
+      </div>
+    </div>
+
+    <!-- Unified Module Switcher -->
+    <div class="nav-center">
+      <div class="nav-modules">
+        <button class="nav-module-btn active" data-module="foundations" id="nav-btn-foundations">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+          </svg>
+          <span>Phase 1: Foundations</span>
+        </button>
+        <button class="nav-module-btn" data-module="mst" id="nav-btn-mst">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="6" cy="6" r="3"></circle>
+            <circle cx="18" cy="6" r="3"></circle>
+            <circle cx="12" cy="18" r="3"></circle>
+            <line x1="8.5" y1="7.5" x2="15.5" y2="7.5"></line>
+            <line x1="7.5" y1="8.5" x2="10.5" y2="15.5"></line>
+            <line x1="16.5" y1="8.5" x2="13.5" y2="15.5"></line>
+          </svg>
+          <span>Phase 2: MST Visualizer</span>
+        </button>
+        <button class="nav-module-btn" data-module="arena" id="nav-btn-arena">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <circle cx="12" cy="12" r="6"></circle>
+            <circle cx="12" cy="12" r="2"></circle>
+          </svg>
+          <span>Phase 3: Practice Arena</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="nav-right">
+      <button id="dark-mode-toggle" class="icon-btn" title="Toggle Dark Mode" aria-label="Toggle dark mode">
+        <svg class="icon-sun" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2">
+          <circle cx="12" cy="12" r="5" />
+          <path
+            d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+        </svg>
+        <svg class="icon-moon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header id="hero">
+    <h1 id="hero-title">Minimum Spanning Tree (MST) Visualizer &amp; Practice Arena</h1>
+    <p id="hero-sub" class="hero-sub">Master spanning tree foundations from first principles, explore Kruskal's &amp; Prim's greedy algorithms through step-by-step visualizations, build custom graphs, and test your mastery in the interactive arena.</p>
+  </header>
+
+  <main id="app">
+
+    <!-- ═══════════════════════════════════════════════════
+         MODULE 1 (PHASE 1): SPANNING TREE FOUNDATIONS
+         ═══════════════════════════════════════════════════ -->
+    <div id="module-foundations" class="module-tab-content active-module">
+      <section class="card foundations-card">
+        <div class="card-header foundations-header">
+          <div class="card-icon" style="background: linear-gradient(135deg, #0F9D58, #34A853)">ST</div>
+          <div>
+            <div class="phase-pill-badge">Phase 1 &bull; Core Theory &amp; Interactive Sandbox</div>
+            <h2>Spanning Tree Foundations</h2>
+          </div>
+        </div>
+
+        <p class="foundations-intro">
+          Before finding a <em>Minimum</em> Spanning Tree (MST), you must first master what constitutes a valid <strong>Spanning Tree</strong>. A spanning tree is a connected, acyclic subgraph containing every vertex of the original graph connected by the exact minimum number of edges.
+        </p>
+
+        <!-- Dedicated Graph Stats Card with Kirchhoff's Matrix Tree Theorem -->
+        <div class="foundations-stats-card">
+          <div class="stats-card-header">
+            <div class="stats-card-title-group">
+              <span class="stats-card-badge">Graph Topology &amp; Combinatorics</span>
+              <h3 class="stats-card-title">Graph Stats &amp; Spanning Tree Capacity</h3>
+            </div>
+            <div class="stats-card-preset-wrap">
+              <label for="foundations-preset-select" class="foundations-select-label">Preset Layout:</label>
+              <select id="foundations-preset-select" class="suite-select">
+                <option value="0">Preset 1: House Graph (5 Nodes, 6 Edges)</option>
+                <option value="1">Preset 2: Textbook Graph (6 Nodes, 9 Edges)</option>
+                <option value="2">Preset 3: Bridge &amp; Dual Clusters (6 Nodes, 7 Edges)</option>
+                <option value="3">Preset 4: Cyclic Grid (7 Nodes, 10 Edges)</option>
+                <option value="4">Preset 5: Complete Graph K4 (4 Nodes, 6 Edges)</option>
+                <option value="5">Preset 6: Complete Graph K5 (5 Nodes, 10 Edges)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="stats-card-grid">
+            <div class="stats-item-box">
+              <span class="stats-item-label">Vertex Count |V|</span>
+              <span id="foundations-graph-v" class="stats-item-value">5</span>
+              <span class="stats-item-sub">Total nodes in G</span>
+            </div>
+            <div class="stats-item-box">
+              <span class="stats-item-label">Edge Count |E|</span>
+              <span id="foundations-graph-e" class="stats-item-value">6</span>
+              <span class="stats-item-sub">Available connections</span>
+            </div>
+            <div class="stats-item-box stats-highlight-box">
+              <div class="stats-item-top">
+                <span class="stats-item-label">Total Possible Spanning Trees &tau;(G)</span>
+                <span id="foundations-tag-method" class="kirchhoff-tag" title="Calculated via Kirchhoff's Matrix Tree Theorem">Kirchhoff's Theorem</span>
+              </div>
+              <span id="foundations-graph-total-trees" class="stats-item-value highlight-val">11</span>
+              <span id="foundations-formula-sub" class="stats-item-sub">&tau;(G) = det(L*) where L = D - A</span>
+            </div>
+          </div>
+
+          <div class="kirchhoff-explainer-banner">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+            <span><strong>Kirchhoff's Matrix Tree Theorem:</strong> For any undirected graph G, the exact number of spanning trees &tau;(G) equals the determinant of any cofactor matrix L* formed by deleting one row and column from the Laplacian matrix (L = D - A).</span>
+          </div>
+        </div>
+
+        <!-- 4 Core Rules Infographic Grid -->
+        <div class="foundations-rules-grid">
+          <!-- Rule 1: All Vertices -->
+          <div class="rule-card" id="rule-card-vertices">
+            <div class="rule-card-top">
+              <span class="rule-num-badge">Rule 1</span>
+              <div class="rule-icon-wrap" style="color: #4285F4;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="6" cy="6" r="3"></circle>
+                  <circle cx="18" cy="6" r="3"></circle>
+                  <circle cx="6" cy="18" r="3"></circle>
+                  <circle cx="18" cy="18" r="3"></circle>
+                </svg>
+              </div>
+            </div>
+            <h3 class="rule-title">All Vertices Included</h3>
+            <div class="rule-formula">V<sub>tree</sub> = V<sub>graph</sub></div>
+            <p class="rule-desc">
+              The tree must span <strong>every single vertex</strong> in the host graph G. No isolated nodes or omitted vertices are allowed (|V<sub>tree</sub>| = |V|).
+            </p>
+            <div class="rule-indicator-tag" id="tag-rule-1">Status: Pending Check</div>
+          </div>
+
+          <!-- Rule 2: Subgraph -->
+          <div class="rule-card" id="rule-card-subgraph">
+            <div class="rule-card-top">
+              <span class="rule-num-badge">Rule 2</span>
+              <div class="rule-icon-wrap" style="color: #9C27B0;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                  <polyline points="2 17 12 22 22 17"></polyline>
+                  <polyline points="2 12 12 17 22 12"></polyline>
+                </svg>
+              </div>
+            </div>
+            <h3 class="rule-title">Subgraph of Original Graph</h3>
+            <div class="rule-formula">E<sub>tree</sub> &subseteq; E, V<sub>tree</sub> &subseteq; V</div>
+            <p class="rule-desc">
+              A spanning tree must be a pure <strong>subgraph</strong> of G. Every chosen edge and vertex must originate from the underlying graph layout.
+            </p>
+            <div class="rule-indicator-tag" id="tag-rule-2">Status: Pending Check</div>
+          </div>
+
+          <!-- Rule 3: V - 1 Edges -->
+          <div class="rule-card" id="rule-card-edges">
+            <div class="rule-card-top">
+              <span class="rule-num-badge">Rule 3</span>
+              <div class="rule-icon-wrap" style="color: #FBBC05;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <circle cx="5" cy="12" r="3"></circle>
+                  <circle cx="19" cy="12" r="3"></circle>
+                </svg>
+              </div>
+            </div>
+            <h3 class="rule-title">Exactly |V| - 1 Edges</h3>
+            <div class="rule-formula">|E<sub>tree</sub>| = |V| - 1</div>
+            <p class="rule-desc">
+              Any valid tree on |V| vertices has <strong>strictly |V| - 1 edges</strong>. Fewer edges leave the graph disconnected; more edges guarantee a cycle.
+            </p>
+            <div class="rule-indicator-tag" id="tag-rule-3">Status: Pending Check</div>
+          </div>
+
+          <!-- Rule 4: No Cycles & Connected -->
+          <div class="rule-card" id="rule-card-cycles">
+            <div class="rule-card-top">
+              <span class="rule-num-badge">Rule 4</span>
+              <div class="rule-icon-wrap" style="color: #34A853;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+              </div>
+            </div>
+            <h3 class="rule-title">Connected &amp; Zero Cycles</h3>
+            <div class="rule-formula">1 Component &bull; No Loops</div>
+            <p class="rule-desc">
+              There is <strong>exactly one unique simple path</strong> between every pair of vertices. The subgraph must be fully connected with <strong>0 cycles</strong>.
+            </p>
+            <div class="rule-indicator-tag" id="tag-rule-4">Status: Pending Check</div>
+          </div>
+        </div>
+
+        <!-- Collapsible Matrix Tree Theorem Breakdown Panel -->
+        <div class="matrix-breakdown-card" id="matrix-breakdown-panel">
+          <div class="matrix-breakdown-header" id="matrix-breakdown-header">
+            <div class="matrix-header-left">
+              <div class="matrix-header-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="9" y1="3" x2="9" y2="21"></line>
+                  <line x1="15" y1="3" x2="15" y2="21"></line>
+                  <line x1="3" y1="9" x2="21" y2="9"></line>
+                  <line x1="3" y1="15" x2="21" y2="15"></line>
+                </svg>
+              </div>
+              <div>
+                <div class="matrix-pill-tag">Linear Algebra &bull; Spectral Graph Theory</div>
+                <h3 class="matrix-header-title">Matrix Tree Theorem Breakdown</h3>
+              </div>
+            </div>
+            <div class="matrix-header-right">
+              <span id="matrix-badge-status" class="matrix-status-chip">Kirchhoff det(L*)</span>
+              <button id="btn-toggle-matrix-breakdown" class="matrix-toggle-btn" title="Toggle Breakdown Panel">
+                <span class="toggle-btn-text">Hide Breakdown</span>
+                <svg class="toggle-chevron rotated" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="matrix-breakdown-body" id="matrix-breakdown-content">
+            <!-- Special Case / Cayley's Formula Highlight Badge (Hidden by default) -->
+            <div id="matrix-cayley-banner" class="matrix-cayley-banner hidden" style="display: none;">
+              <div class="cayley-badge-icon">⚡</div>
+              <div class="cayley-badge-content">
+                <h4 class="cayley-badge-title">Special Case: Complete Graph Detected!</h4>
+                <p class="cayley-badge-desc">
+                  Every node is connected to every other node (E = n(n&minus;1)/2). Calculated instantly using <strong>Cayley's Formula</strong>:
+                  <span class="cayley-formula-display">
+                    &tau;(K<sub>n</sub>) = n<sup>n &minus; 2</sup> = <span id="cayley-eval-text">4<sup>4-2</sup> = 16</span> Spanning Trees
+                  </span>
+                </p>
+              </div>
+            </div>
+
+            <!-- General Graph Kirchhoff Banner -->
+            <div id="matrix-kirchhoff-banner" class="matrix-kirchhoff-banner">
+              <div class="kirchhoff-badge-icon">📐</div>
+              <div class="kirchhoff-badge-content">
+                <h4 class="kirchhoff-badge-title">Kirchhoff's Matrix Tree Theorem</h4>
+                <p class="kirchhoff-badge-desc">
+                  Calculated by constructing the Laplacian matrix <strong>L = D &minus; A</strong>, crossing out row &amp; column <strong id="matrix-strike-node-name">v<sub>n</sub></strong> to obtain reduced cofactor matrix <strong>L*</strong>, and evaluating <strong>&tau;(G) = det(L*)</strong> via Gaussian elimination.
+                </p>
+              </div>
+            </div>
+
+            <!-- 4-Matrix Interactive Visualization Grid -->
+            <div class="matrix-visual-grid">
+              <!-- Matrix 1: Degree Matrix D -->
+              <div class="matrix-tile">
+                <div class="matrix-tile-header">
+                  <span class="matrix-tile-title">1. Degree Matrix (D)</span>
+                  <span class="matrix-tile-subtitle">Diagonal = Vertex Degree, Off-diag = 0</span>
+                </div>
+                <div class="matrix-table-wrap">
+                  <div id="matrix-disp-d" class="matrix-render-box"></div>
+                </div>
+              </div>
+
+              <!-- Matrix 2: Adjacency Matrix A -->
+              <div class="matrix-tile">
+                <div class="matrix-tile-header">
+                  <span class="matrix-tile-title">2. Adjacency Matrix (A)</span>
+                  <span class="matrix-tile-subtitle">A<sub>ij</sub> = 1 if edge (i,j) exists, else 0</span>
+                </div>
+                <div class="matrix-table-wrap">
+                  <div id="matrix-disp-a" class="matrix-render-box"></div>
+                </div>
+              </div>
+
+              <!-- Matrix 3: Laplacian Matrix L = D - A -->
+              <div class="matrix-tile">
+                <div class="matrix-tile-header">
+                  <span class="matrix-tile-title">3. Laplacian Matrix (L = D &minus; A)</span>
+                  <span class="matrix-tile-subtitle">L<sub>ii</sub> = deg(v<sub>i</sub>), L<sub>ij</sub> = &minus;1 if edge</span>
+                </div>
+                <div class="matrix-table-wrap">
+                  <div id="matrix-disp-l" class="matrix-render-box"></div>
+                </div>
+                <span class="matrix-tile-foot">Crossed-out red row/column will be eliminated to form L*</span>
+              </div>
+
+              <!-- Matrix 4: Reduced Laplacian Matrix L* -->
+              <div class="matrix-tile highlight-tile">
+                <div class="matrix-tile-header">
+                  <div class="tile-title-row">
+                    <span class="matrix-tile-title">4. Reduced Laplacian Matrix (L*)</span>
+                    <span class="matrix-tile-badge">Cofactor Submatrix</span>
+                  </div>
+                  <span class="matrix-tile-subtitle">Last row &amp; column eliminated &bull; Size (n&minus;1)&times;(n&minus;1)</span>
+                </div>
+                <div class="matrix-table-wrap">
+                  <div id="matrix-disp-lstar" class="matrix-render-box"></div>
+                </div>
+                <div class="matrix-calc-result-bar">
+                  <span class="calc-label">det(L*) via Gaussian Elimination =</span>
+                  <span id="matrix-det-result-val" class="calc-val">11</span>
+                  <span class="calc-unit">Valid Spanning Trees</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step-by-Step Mathematical Walkthrough -->
+            <div class="matrix-steps-walkthrough">
+              <h4 class="walkthrough-title">Step-by-Step Linear Algebra Walkthrough:</h4>
+              <ol class="walkthrough-list" id="matrix-walkthrough-steps">
+                <li><strong>Graph Topology:</strong> Total vertices |V| = <span id="walkthrough-v">5</span>, Total edges |E| = <span id="walkthrough-e">6</span>.</li>
+                <li><strong>Laplacian Formulation:</strong> L = D &minus; A is symmetric with row sums equal to 0.</li>
+                <li><strong>Cofactor Reduction:</strong> Delete row <span id="walkthrough-removed-idx">5</span> and column <span id="walkthrough-removed-idx2">5</span> (Node <span id="walkthrough-removed-label">E</span>) to form the (n-1)&times;(n-1) cofactor matrix L*.</li>
+                <li id="walkthrough-step-det"><strong>Determinant Computation:</strong> Apply Gaussian elimination with partial pivoting to compute det(L*) = <span id="walkthrough-det-val">11</span>.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Playground Sandbox -->
+        <div class="foundations-playground-wrap">
+          <div class="foundations-playground-header">
+            <div class="playground-header-left">
+              <span class="playground-title-tag">Interactive Edge-Toggle Sandbox</span>
+              <span class="playground-subtitle">Click or tap graph edges to toggle them ON or OFF. Build a valid spanning tree!</span>
+            </div>
+            <div class="playground-header-right">
+              <span class="playground-subtitle">Goal: Select exactly <strong id="foundations-target-edges-hint">4</strong> edges connecting all nodes without cycles</span>
+            </div>
+          </div>
+
+          <!-- Live Rule Metrics Strip -->
+          <div class="foundations-metrics-bar">
+            <div class="foundations-metric-chip">
+              <span class="f-metric-label">Total Vertices |V|</span>
+              <span id="foundations-stat-v" class="f-metric-val">5</span>
+            </div>
+            <div class="foundations-metric-chip">
+              <span class="f-metric-label">Selected Edges</span>
+              <span id="foundations-stat-e" class="f-metric-val">0 / 4</span>
+            </div>
+            <div class="foundations-metric-chip">
+              <span class="f-metric-label">Connectivity</span>
+              <span id="foundations-stat-conn" class="f-metric-val f-warn">Disconnected</span>
+            </div>
+            <div class="foundations-metric-chip">
+              <span class="f-metric-label">Cycle Status</span>
+              <span id="foundations-stat-cycles" class="f-metric-val f-good">0 Cycles</span>
+            </div>
+            <div class="foundations-metric-chip">
+              <span class="f-metric-label">Total Possible Trees &tau;(G)</span>
+              <span id="foundations-stat-trees-chip" class="f-metric-val f-accent">11</span>
+            </div>
+          </div>
+
+          <!-- Interactive Canvas Container -->
+          <div class="foundations-canvas-container">
+            <canvas id="foundations-canvas"></canvas>
+            <span class="canvas-hint-tag">Click / tap any edge or weight pill to toggle ON / OFF</span>
+          </div>
+
+          <!-- Selected Edges Bar -->
+          <div class="foundations-edge-list-bar">
+            <span class="edge-list-label">Active Edges:</span>
+            <div id="foundations-selected-edges-list" class="foundations-selected-edges">
+              <span class="foundations-placeholder">No edges toggled on yet. Click any edge on the graph to activate it!</span>
+            </div>
+          </div>
+
+          <!-- Dynamic Feedback Banner (Success / Failure via BFS/DFS) -->
+          <div id="foundations-feedback-banner" class="foundations-feedback-banner hidden">
+            <div class="feedback-banner-header">
+              <div id="foundations-feedback-icon" class="feedback-icon"></div>
+              <div class="feedback-text-wrap">
+                <h4 id="foundations-feedback-title" class="feedback-title">Validation Status</h4>
+                <p id="foundations-feedback-desc" class="feedback-desc"></p>
+              </div>
+            </div>
+            <div class="feedback-checklist" id="foundations-checklist">
+              <div class="checklist-item" id="check-item-v">
+                <span class="check-bullet">&bull;</span>
+                <span class="check-text">Rule 1: All vertices spanned</span>
+              </div>
+              <div class="checklist-item" id="check-item-sub">
+                <span class="check-bullet">&bull;</span>
+                <span class="check-text">Rule 2: Valid subgraph of original graph</span>
+              </div>
+              <div class="checklist-item" id="check-item-e">
+                <span class="check-bullet">&bull;</span>
+                <span class="check-text">Rule 3: Exactly |V| - 1 edges selected</span>
+              </div>
+              <div class="checklist-item" id="check-item-c">
+                <span class="check-bullet">&bull;</span>
+                <span class="check-text">Rule 4: Connected &amp; zero cycles (verified via BFS/DFS)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Controls Bar -->
+          <div class="foundations-actions-row">
+            <button id="foundations-btn-check" class="primary-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              Check Spanning Tree
+            </button>
+            <button id="foundations-btn-reset" class="secondary-btn">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+              </svg>
+              Reset
+            </button>
+            <button id="foundations-btn-sample" class="secondary-btn" title="Toggle a sample valid spanning tree">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+              </svg>
+              Sample Valid Tree
+            </button>
+            <button id="foundations-btn-next" class="primary-btn cta-proceed" title="Proceed to Phase 2: Prim & Kruskal Visualizer">
+              <span>Proceed to Phase 2: MST Visualizer</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════
+         MODULE 2 (PHASE 2): MINIMUM SPANNING TREES (PRIM & KRUSKAL)
+         ═══════════════════════════════════════════════════ -->
+    <div id="module-mst" class="module-tab-content hidden">
+      <section class="card">
+        <div class="card-header">
+          <div class="card-icon" style="background:#4285F4">MST</div>
+          <h2>Minimum Spanning Tree Visualizer</h2>
+        </div>
+
+        <!-- Toolbar: Algorithm & Presets -->
+        <div class="toolbar-wrap">
+          <div class="toolbar-group">
+            <div class="toggle-pill-group">
+              <button id="mst-algo-kruskal" class="toggle-pill-btn active">Kruskal's Algorithm</button>
+              <button id="mst-algo-prim" class="toggle-pill-btn">Prim's Algorithm</button>
+            </div>
+            <select id="mst-preset-select" class="suite-select">
+              <option value="textbook">Preset: Textbook 6-Node Graph</option>
+              <option value="dense">Preset: Complete 5-Node (K5)</option>
+              <option value="bridge">Preset: Bridge &amp; Clusters</option>
+              <option value="cyclic">Preset: Cyclic 7-Node Grid</option>
+            </select>
+            <div id="mst-prim-start-wrap" class="hidden" style="display:inline-flex; align-items:center; gap:6px;">
+              <span style="font-size: 12px; font-weight: 600; color: var(--text-tertiary);">START NODE:</span>
+              <select id="mst-start-node" class="suite-select" title="Start vertex for Prim's algorithm"></select>
+            </div>
+          </div>
+
+          <div class="toolbar-group">
+            <span style="font-size: 12px; color: var(--text-tertiary); font-weight: 600;">CANVAS MODE:</span>
+            <div class="mode-radios-bar">
+              <label class="mode-radio-label"><input type="radio" name="mst-mode" value="select" checked> Drag</label>
+              <label class="mode-radio-label"><input type="radio" name="mst-mode" value="add-node"> +Node</label>
+              <label class="mode-radio-label"><input type="radio" name="mst-mode" value="add-edge"> +Edge</label>
+              <label class="mode-radio-label"><input type="radio" name="mst-mode" value="delete"> Delete</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Graph Builder Controls with Strict Positive Weight Validation -->
+        <div class="mst-builder-controls">
+          <div class="mst-builder-row">
+            <!-- Add Node Group -->
+            <div class="mst-builder-group">
+              <span class="mst-builder-label">Add Node:</span>
+              <input id="mst-input-node-name" type="text" class="mst-builder-input" placeholder="Label (e.g. G)" maxlength="4" />
+              <button id="mst-btn-add-node" class="secondary-btn sm">+ Add Node</button>
+            </div>
+
+            <!-- Divider -->
+            <span class="builder-divider"></span>
+
+            <!-- Add Edge Group with Positive Weight Validation -->
+            <div class="mst-builder-group">
+              <span class="mst-builder-label">Connect Edge:</span>
+              <select id="mst-select-edge-u" class="mst-builder-input mst-edge-select"></select>
+              <span class="mst-builder-arrow">&harr;</span>
+              <select id="mst-select-edge-v" class="mst-builder-input mst-edge-select"></select>
+              <input id="mst-input-edge-weight" type="number" min="0.1" step="any" class="mst-builder-input mst-weight-input" placeholder="Weight (>0)" />
+              <button id="mst-btn-add-edge" class="secondary-btn sm">+ Add Edge</button>
+            </div>
+
+            <!-- Divider -->
+            <span class="builder-divider"></span>
+
+            <!-- Clear / Reset Graph -->
+            <button id="mst-btn-clear-graph" class="icon-btn mst-clear-btn" title="Clear all nodes and edges">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              </svg>
+              Clear Graph
+            </button>
+          </div>
+
+          <!-- Error Alert Banner (Hidden by default, shown on invalid weights <= 0 or other errors) -->
+          <div id="mst-builder-error" class="mst-builder-error hidden">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span id="mst-builder-error-text">Edge weight must be a positive number greater than 0.</span>
+          </div>
+        </div>
+
+        <!-- Playback Controls -->
+        <div class="controls-bar">
+          <button id="mst-btn-reset" class="ctrl-btn" title="Reset"><svg width="18" height="18" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="1 4 1 10 7 10" />
+              <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+            </svg></button>
+          <button id="mst-btn-step-back" class="ctrl-btn" title="Step Back"><svg width="18" height="18"
+              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="19 20 9 12 19 4 19 20" />
+              <line x1="5" y1="19" x2="5" y2="5" />
+            </svg></button>
+          <button id="mst-btn-play" class="ctrl-btn play-btn" title="Play / Pause">
+            <svg class="play-icon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3" />
+            </svg>
+          </button>
+          <button id="mst-btn-step-fwd" class="ctrl-btn" title="Step Forward"><svg width="18" height="18"
+              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="5 4 15 12 5 20 5 4" />
+              <line x1="19" y1="5" x2="19" y2="19" />
+            </svg></button>
+          <div class="speed-group">
+            <label for="mst-speed-slider">Speed</label>
+            <input id="mst-speed-slider" type="range" min="0.25" max="4" step="0.25" value="1" />
+            <span id="mst-speed-label">1×</span>
+          </div>
+        </div>
+
+        <!-- Step narration banner -->
+        <div class="narration-banner">
+          <div class="narration-badge">
+            <span class="pulse-indicator"></span>
+            <span id="mst-narration-tag">Ready</span>
+          </div>
+          <p id="mst-narration-text">Click <strong>Play</strong> or <strong>Step Forward</strong> to watch the greedy MST construction.</p>
+        </div>
+
+        <!-- Side-by-Side Canvas + Pseudocode Layout -->
+        <div class="mst-canvas-pseudocode-row">
+          <!-- Canvas Column -->
+          <div class="graph-canvas-container mst-canvas-flex">
+            <canvas id="mst-canvas"></canvas>
+            <span class="canvas-hint-tag">Drag vertices to rearrange | Click nodes/edges in edit mode</span>
+          </div>
+
+          <!-- Pseudocode Panel Column -->
+          <div class="mst-pseudocode-panel">
+            <!-- Kruskal Pseudocode Block -->
+            <div id="mst-pseudo-kruskal" class="mst-pseudo-block">
+              <div class="mst-pseudo-header">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="16 18 22 12 16 6"></polyline>
+                  <polyline points="8 6 2 12 8 18"></polyline>
+                </svg>
+                <span>Kruskal's Algorithm Pseudocode</span>
+              </div>
+              <pre class="mst-pseudo-code"><span class="pseudo-line" data-line="1"><span class="kw">function</span> <span class="fn">Kruskal</span>(G=(V,E)):</span>
+<span class="pseudo-line" data-line="2">  T = ∅, DSU = <span class="fn">MakeSet</span>(V)</span>
+<span class="pseudo-line" data-line="3">  <span class="fn">Sort</span> E in non-decreasing weight order</span>
+<span class="pseudo-line" data-line="4">  <span class="kw">for each</span> edge (u, v) ∈ E (sorted):</span>
+<span class="pseudo-line" data-line="5">    <span class="kw">if</span> DSU.<span class="fn">Find</span>(u) ≠ DSU.<span class="fn">Find</span>(v):</span>
+<span class="pseudo-line" data-line="6">      T = T ∪ {(u, v)}</span>
+<span class="pseudo-line" data-line="7">      DSU.<span class="fn">Union</span>(u, v)</span>
+<span class="pseudo-line" data-line="8">    <span class="kw">else</span>:</span>
+<span class="pseudo-line" data-line="9">      <span class="cmt">// Cycle detected: discard edge</span></span>
+<span class="pseudo-line" data-line="10">      <span class="kw">discard</span> (u, v)</span>
+<span class="pseudo-line" data-line="11">  <span class="kw">return</span> T</span></pre>
+            </div>
+
+            <!-- Prim Pseudocode Block -->
+            <div id="mst-pseudo-prim" class="mst-pseudo-block hidden">
+              <div class="mst-pseudo-header">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="16 18 22 12 16 6"></polyline>
+                  <polyline points="8 6 2 12 8 18"></polyline>
+                </svg>
+                <span>Prim's Algorithm Pseudocode</span>
+              </div>
+              <pre class="mst-pseudo-code"><span class="pseudo-line" data-line="1"><span class="kw">function</span> <span class="fn">Prim</span>(G=(V,E), s):</span>
+<span class="pseudo-line" data-line="2">  T = ∅, S = {s}</span>
+<span class="pseudo-line" data-line="3">  PQ = <span class="fn">MinPriorityQueue</span>(edges from s)</span>
+<span class="pseudo-line" data-line="4">  <span class="kw">while</span> |S| &lt; |V| <span class="kw">and</span> PQ not empty:</span>
+<span class="pseudo-line" data-line="5">    (u, v) = PQ.<span class="fn">ExtractMin</span>()</span>
+<span class="pseudo-line" data-line="6">    <span class="kw">if</span> v ∉ S:</span>
+<span class="pseudo-line" data-line="7">      S = S ∪ {v}</span>
+<span class="pseudo-line" data-line="8">      T = T ∪ {(u, v)}</span>
+<span class="pseudo-line" data-line="9">      <span class="kw">for each</span> edge (v, w) with w ∉ S:</span>
+<span class="pseudo-line" data-line="10">        PQ.<span class="fn">Insert</span>((v, w))</span>
+<span class="pseudo-line" data-line="11">  <span class="kw">return</span> T</span></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- Summary Strip -->
+        <div class="freq-stats">
+          <div class="stat-chip"><span class="stat-label">Total Vertices |V|</span><span id="mst-stat-v"
+              class="stat-value">6</span></div>
+          <div class="stat-chip"><span class="stat-label">Total Edges |E|</span><span id="mst-stat-e"
+              class="stat-value">8</span></div>
+          <div class="stat-chip stat-chip-trees" title="Calculated dynamically via Kirchhoff's Matrix Tree Theorem"><span class="stat-label">Total Possible Trees &tau;(G)</span><span id="mst-stat-total-trees"
+              class="stat-value highlight-val">8</span></div>
+          <div class="stat-chip"><span class="stat-label">MST Edges (|V|-1)</span><span id="mst-stat-mst-edges"
+              class="stat-value">0 / 5</span></div>
+          <div class="stat-chip"><span class="stat-label">Total MST Weight</span><span id="mst-stat-weight"
+              class="stat-value">0</span></div>
+          <div class="stat-chip"><span class="stat-label">Cycle Rejections</span><span id="mst-stat-rejections"
+              class="stat-value">0</span></div>
+        </div>
+
+        <!-- Algorithm Specific Analytics Panels -->
+        <div class="mst-analytics-grid">
+          <!-- Kruskal DSU Panel -->
+          <div id="mst-dsu-panel" class="dsu-panel">
+            <div class="panel-header-mini">
+              <h3>Disjoint Set Union (Union-Find) State</h3>
+              <span class="panel-subtitle">Tracks connected components &amp; prevents cycles</span>
+            </div>
+            <div id="mst-dsu-sets" class="dsu-sets-grid"></div>
+
+            <div class="edge-queue-table-wrap">
+              <table class="breakdown-table">
+                <thead>
+                  <tr>
+                    <th>Edge</th>
+                    <th>Weight</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="mst-edge-queue-body"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Prim Cut Panel -->
+          <div id="mst-prim-cut-panel" class="prim-cut-panel hidden">
+            <div class="panel-header-mini">
+              <h3>Prim's Cut-Crossing Edge Queue</h3>
+              <span class="panel-subtitle">Greedily selects minimum edge connecting tree S to V\S</span>
+            </div>
+            <div class="prim-cut-display">
+              <div class="cut-partition-box">
+                <h4>Tree Vertices (S)</h4>
+                <div id="mst-prim-tree-nodes" class="cut-set-nodes">{}</div>
+              </div>
+              <div class="cut-partition-box">
+                <h4>Non-Tree Vertices (V \ S)</h4>
+                <div id="mst-prim-nontree-nodes" class="cut-set-nodes">{}</div>
+              </div>
+            </div>
+            <div style="margin-top:14px;">
+              <h4 style="font-size:11px; text-transform:uppercase; color:var(--text-tertiary);">Candidate Edges Crossing the Cut:</h4>
+              <div id="mst-prim-queue" class="cut-edges-queue"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════
+         MODULE 2: FULLY INTERACTIVE PRACTICE ARENA (MST)
+         ═══════════════════════════════════════════════════ -->
+    <div id="module-arena" class="module-tab-content hidden">
+      <section class="card">
+        <div class="card-header">
+          <div class="card-icon" style="background:#EA4335">🎯</div>
+          <h2>Interactive Edge-Tapping Practice Arena</h2>
+        </div>
+
+        <!-- Arena Controls & Mode Toggle -->
+        <div class="arena-header-controls">
+          <div class="arena-topic-filters">
+            <button id="arena-mode-kruskal" class="arena-topic-btn active">Kruskal's Algorithm Mode</button>
+            <button id="arena-mode-prim" class="arena-topic-btn">Prim's Algorithm Mode</button>
+          </div>
+
+          <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <select id="arena-graph-select" class="suite-select">
+              <option value="random">🎲 Random Graph Preset</option>
+              <option value="0">Graph 1: 5 Nodes (Intro Cycles)</option>
+              <option value="1">Graph 2: 6 Nodes (Classic Textbook)</option>
+              <option value="2">Graph 3: 7 Nodes (Complex Grid &amp; Bridge)</option>
+            </select>
+            <button id="arena-btn-new-challenge" class="primary-btn sm">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+              </svg>
+              New Challenge
+            </button>
+          </div>
+        </div>
+
+        <!-- Student Scoreboard -->
+        <div class="arena-scoreboard">
+          <div class="arena-score-chip">
+            <span class="arena-score-label">Challenges Solved</span>
+            <span id="arena-stat-solved" class="arena-score-value">0</span>
+          </div>
+          <div class="arena-score-chip">
+            <span class="arena-score-label">Current Streak</span>
+            <span id="arena-stat-streak" class="arena-score-value">0 🔥</span>
+          </div>
+          <div class="arena-score-chip">
+            <span class="arena-score-label">Mistakes Made</span>
+            <span id="arena-stat-mistakes" class="arena-score-value">0</span>
+          </div>
+          <div class="arena-score-chip">
+            <span class="arena-score-label">Mastery XP</span>
+            <span id="arena-stat-xp" class="arena-score-value">0 XP</span>
+          </div>
+        </div>
+
+        <!-- Dynamic Challenge Card with Interactive Canvas -->
+        <div class="arena-card">
+          <div class="arena-card-top">
+            <span id="arena-topic-badge" class="arena-badge diff-medium">Kruskal's Greedy Order</span>
+            <span id="arena-target-badge" class="arena-badge diff-hard">Pick Minimum Valid Edges</span>
+          </div>
+
+          <h3 id="arena-challenge-title" class="arena-challenge-title">Construct the Minimum Spanning Tree</h3>
+          <p id="arena-challenge-desc" class="arena-challenge-desc">
+            Click/tap the graph edges on the canvas below in the exact greedy order required by the algorithm.
+          </p>
+
+          <!-- Interactive Edge-Tapping Canvas Container -->
+          <div class="arena-mst-interactive-wrap">
+            <div class="arena-mst-canvas-container">
+              <canvas id="arena-canvas"></canvas>
+              <span class="canvas-hint-tag">Tap or click any edge / weight pill to select</span>
+            </div>
+
+            <div class="arena-mst-info-bar">
+              <div class="arena-mst-progress">
+                <span class="arena-mst-stat">Selected Edges: <strong id="arena-edge-count">0 / 0</strong></span>
+                <span class="arena-mst-stat">MST Weight: <strong id="arena-total-weight">0</strong></span>
+                <span id="arena-prim-visited-display" class="arena-mst-stat hidden">Tree Visited: <strong id="arena-visited-nodes">{}</strong></span>
+              </div>
+              <span class="arena-mst-hint">Target: Pick (|V| - 1) valid edges with minimum total weight</span>
+            </div>
+
+            <!-- Selected Edges Chips List -->
+            <div class="arena-mst-selected-edges" id="arena-selected-edges-list">
+              <span class="arena-mst-placeholder">No edges chosen yet. Tap the first minimum edge on the canvas!</span>
+            </div>
+          </div>
+
+          <!-- Real-Time Interactive Feedback Banner -->
+          <div id="arena-feedback-banner" class="arena-feedback banner-correct hidden">
+            <h4 id="arena-feedback-title" style="font-size: 15px; font-weight: 700; margin-bottom: 4px;"></h4>
+            <p id="arena-feedback-desc" style="font-size: 13px;"></p>
+          </div>
+
+          <!-- Arena Action Buttons -->
+          <div class="arena-mst-check-row">
+            <button id="arena-btn-validate" class="primary-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              Validate MST
+            </button>
+            <button id="arena-btn-undo" class="secondary-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="1 4 1 10 7 10"></polyline>
+                <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+              </svg>
+              Undo Last Edge
+            </button>
+            <button id="arena-btn-reset" class="secondary-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+              </svg>
+              Reset Attempt
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+  </main>
+
+  <!-- Edge Weight Prompt Modal -->
+  <div id="mst-edge-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="mst-modal-title">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <div class="modal-badge-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="6" cy="12" r="3"></circle>
+              <circle cx="18" cy="12" r="3"></circle>
+              <line x1="9" y1="12" x2="15" y2="12"></line>
+            </svg>
+          </div>
+          <div>
+            <h3 id="mst-modal-title">Connect Edge</h3>
+            <p id="mst-modal-subtitle" class="modal-subtitle">Enter weight for edge (e.g., between Node A and Node B):</p>
+          </div>
+        </div>
+        <button type="button" id="mst-modal-close-btn" class="modal-close-btn" aria-label="Close modal">&times;</button>
+      </div>
+      <form id="mst-modal-form" onsubmit="return false;">
+        <div class="modal-body">
+          <div class="modal-edge-preview">
+            <div class="node-pill" id="mst-modal-node-u">A</div>
+            <div class="edge-connector-line">
+              <span class="weight-badge-preview" id="mst-modal-weight-preview">?</span>
+            </div>
+            <div class="node-pill" id="mst-modal-node-v">B</div>
+          </div>
+          <div class="modal-input-group">
+            <label for="mst-modal-weight-input" class="modal-label">Edge Weight (<span class="req">required, &gt; 0</span>):</label>
+            <div class="input-with-icon">
+              <input
+                id="mst-modal-weight-input"
+                type="number"
+                step="any"
+                min="0.0001"
+                placeholder="Enter positive weight (e.g. 4)"
+                class="modal-input"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+          <div id="mst-modal-error" class="modal-error-banner hidden">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span id="mst-modal-error-text">Edge weight must be a positive number greater than 0.</span>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="mst-modal-cancel-btn" class="secondary-btn">Cancel</button>
+          <button type="submit" id="mst-modal-submit-btn" class="primary-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Add Edge
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Real-time Toast Notifications Container -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <footer id="footer">
+    <p>Minimum Spanning Tree (MST) Interactive Visualizer &amp; Practice Arena &bull; Design and Analysis of Algorithms (DAA)</p>
+  </footer>
+
+  <!-- Single Consolidated Script -->
+  <script src="script.js"></script>
+</body>
+
+</html>
